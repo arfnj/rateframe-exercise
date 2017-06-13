@@ -38,3 +38,10 @@ function onPlayerStateChange(event) {
 function stopVideo() {
   player.stopVideo();
 }
+
+const timeGrabber = () => {
+  let timestamp = player.getCurrentTime();
+  timestamp = timeCleaner(timestamp);
+  let chronolog = document.getElementbyId("chronolog").innerHTML;
+  chronolog = `${timestamp}\n${chronolog}`;
+}
