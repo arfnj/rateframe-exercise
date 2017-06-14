@@ -12,11 +12,11 @@ function onYouTubeIframeAPIReady() {
   player = new YT.Player('player', {
     height: '390',
     width: '640',
-    videoId: 'M7lc1UVf-VE',
-    events: {
-      'onReady': onPlayerReady,
-      'onStateChange': onPlayerStateChange
-    }
+    videoId: 'QrGrOK8oZG8'
+    // events: {
+    //   'onReady': onPlayerReady
+      // 'onStateChange': onPlayerStateChange
+    // }
   });
 }
 
@@ -25,23 +25,36 @@ function onPlayerReady(event) {
   event.target.playVideo();
 }
 
-// 5. The API calls this function when the player's state changes.
-//    The function indicates that when playing a video (state=1),
-//    the player should play for six seconds and then stop.
-var done = false;
-function onPlayerStateChange(event) {
-  if (event.data == YT.PlayerState.PLAYING && !done) {
-    setTimeout(stopVideo, 6000);
-    done = true;
-  }
-}
-function stopVideo() {
-  player.stopVideo();
-}
+// // 5. The API calls this function when the player's state changes.
+// //    The function indicates that when playing a video (state=1),
+// //    the player should play for six seconds and then stop.
+// var done = false;
+// function onPlayerStateChange(event) {
+//   if (event.data == YT.PlayerState.PLAYING && !done) {
+//     setTimeout(stopVideo, 6000);
+//     done = true;
+//   }
+// }
+// function stopVideo() {
+//   player.stopVideo();
+// }
 
 const timeGrabber = () => {
-  let timestamp = player.getCurrentTime();
-  timestamp = timeCleaner(timestamp);
-  let chronolog = document.getElementbyId("chronolog").innerHTML;
-  chronolog = `${timestamp}\n${chronolog}`;
+  if (player.getPlayerState() === 1) {
+    let timestamp = player.getCurrentTime();
+    timestamp = timeCleaner(timestamp);
+    let chronolog = document.getElementById("chronolog");
+    chronolog.innerHTML = `<div>${timestamp}</div>${chronolog.innerHTML}`;
+  }
 }
+
+const timeCleaner = (timestamp) => {
+  let minutes = ~~(timestamp/60);
+  let seconds = timestamp-(minutes*60);
+  seconds = seconds < 10 ? '0'+(''+seconds).slice(0,1) : (''+seconds).slice(0,2);
+  return `${minutes}:${seconds}`;
+}
+
+
+
+
